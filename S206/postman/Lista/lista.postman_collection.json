@@ -1,0 +1,178 @@
+{
+	"info": {
+		"_postman_id": "e8e3df1d-46f7-4749-ad2a-9832eb551f2d",
+		"name": "ListaPostman",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39347788"
+	},
+	"item": [
+		{
+			"name": "Get_Random_Dog_Image",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dog.ceo/api/breeds/image/random",
+					"protocol": "https",
+					"host": [
+						"dog",
+						"ceo"
+					],
+					"path": [
+						"api",
+						"breeds",
+						"image",
+						"random"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_All_Dog_Breed",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dog.ceo/api/breeds/list/all",
+					"protocol": "https",
+					"host": [
+						"dog",
+						"ceo"
+					],
+					"path": [
+						"api",
+						"breeds",
+						"list",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_All_ShihTzu_Images",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "breed",
+						"value": "shihtzu"
+					}
+				],
+				"url": {
+					"raw": "https://dog.ceo/api/breed/shihtzu/images",
+					"protocol": "https",
+					"host": [
+						"dog",
+						"ceo"
+					],
+					"path": [
+						"api",
+						"breed",
+						"shihtzu",
+						"images"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_Random_Subrace_Image",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dog.ceo/api/breed/retriever/golden/images",
+					"protocol": "https",
+					"host": [
+						"dog",
+						"ceo"
+					],
+					"path": [
+						"api",
+						"breed",
+						"retriever",
+						"golden",
+						"images"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_Invalid_Race",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dog.ceo/api/breed/naoexiste/images/random",
+					"protocol": "https",
+					"host": [
+						"dog",
+						"ceo"
+					],
+					"path": [
+						"api",
+						"breed",
+						"naoexiste",
+						"images",
+						"random"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_Invalid_Subrace",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dog.ceo/api/breed/retriever/pinscher/images",
+					"protocol": "https",
+					"host": [
+						"dog",
+						"ceo"
+					],
+					"path": [
+						"api",
+						"breed",
+						"retriever",
+						"pinscher",
+						"images"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
