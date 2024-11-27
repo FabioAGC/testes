@@ -1,0 +1,452 @@
+{
+	"info": {
+		"_postman_id": "e8e3df1d-46f7-4749-ad2a-9832eb551f2d",
+		"name": "partepostman",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39347788"
+	},
+	"item": [
+		{
+			"name": "POST",
+			"item": [
+				{
+					"name": "Post_create_user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify create operation\", function () {\r",
+									"    if (pm.response.code === 201) {\r",
+									"        pm.response.to.have.status(201);  // Criar usuário pela primeira vez\r",
+									"    } else if (pm.response.code === 422) {\r",
+									"        pm.response.to.have.status(422);  // Criar usuário já existente\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected response status: \" + pm.response.code);\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains all user creation parameters\", function () {\r",
+									"    if(pm.response.code === 201){ \r",
+									"        // Verifica se o usuário criado na primeira vez contém todos os parâmetros\r",
+									"        var jsonData = pm.response.json();\r",
+									"        var data = jsonData.data || jsonData; \r",
+									"        \r",
+									"        pm.expect(data).to.have.property(\"id\");\r",
+									"        pm.expect(data).to.have.property(\"name\");\r",
+									"        pm.expect(data).to.have.property(\"email\");\r",
+									"    } else if (pm.response.code === 422){\r",
+									"        // Os parâmetros deste usuário existente já estão cadastrados\r",
+									"        var jsonData = pm.response.json();\r",
+									"        pm.expect(jsonData).to.be.an('array').that.is.not.empty;\r",
+									"        pm.expect(jsonData[0]).to.have.property('field', 'email');\r",
+									"        pm.expect(jsonData[0]).to.have.property('message').that.includes('has already been taken');\r",
+									"    } else {\r",
+									"\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Capture user ID\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.environment.set(\"user_id\", jsonData.id);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "f748cbb3116e44fe80266bffc031a81a5ee134434e64c60709b155e72c46e0fa",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Fabio augusto\",\r\n  \"email\": \"binhog322@gmail.com\",\r\n  \"gender\": \"male\",\r\n  \"status\": \"active\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://gorest.co.in/public/v2/users",
+							"protocol": "https",
+							"host": [
+								"gorest",
+								"co",
+								"in"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GET",
+			"item": [
+				{
+					"name": "Get_user_details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body should be a JSON object\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body should contain expected fields\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    var data = jsonData.data || jsonData; \r",
+									"\r",
+									"    pm.expect(data).to.have.property(\"id\");\r",
+									"    pm.expect(data).to.have.property(\"name\");\r",
+									"    pm.expect(data).to.have.property(\"email\");\r",
+									"    pm.expect(data).to.have.property(\"gender\");\r",
+									"    pm.expect(data).to.have.property(\"status\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "f748cbb3116e44fe80266bffc031a81a5ee134434e64c60709b155e72c46e0fa",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://gorest.co.in/public/v2/users/6951175",
+							"protocol": "https",
+							"host": [
+								"gorest",
+								"co",
+								"in"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"6951175"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get_invalid_user_details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);   \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error message is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"message\", \"Resource not found\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "f748cbb3116e44fe80266bffc031a81a5ee134434e64c60709b155e72c46e0fa",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://gorest.co.in/public/v2/users/1",
+							"protocol": "https",
+							"host": [
+								"gorest",
+								"co",
+								"in"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PUT",
+			"item": [
+				{
+					"name": "Put_update_user_details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body should be a JSON object\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body should contain expected fields\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    var data = jsonData.data || jsonData; \r",
+									"\r",
+									"    pm.expect(data).to.have.property(\"id\");\r",
+									"    pm.expect(data).to.have.property(\"name\");\r",
+									"    pm.expect(data).to.have.property(\"email\");\r",
+									"    pm.expect(data).to.have.property(\"gender\");\r",
+									"    pm.expect(data).to.have.property(\"status\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"name\": \"fabio cruvinel\",  \r\n    \"email\": \"fabiocruvinel@gmail.com\",\r\n    \"gender\": \"male\",\r\n    \"status\": \"active\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://gorest.co.in/public/v2/users/6951175",
+							"protocol": "https",
+							"host": [
+								"gorest",
+								"co",
+								"in"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"6951175"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PATCH",
+			"item": [
+				{
+					"name": "Patch_update_email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body should be a JSON object\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "f748cbb3116e44fe80266bffc031a81a5ee134434e64c60709b155e72c46e0fa",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": \"inactive\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://gorest.co.in/public/v2/users/6951175",
+							"protocol": "https",
+							"host": [
+								"gorest",
+								"co",
+								"in"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"6951175"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DELETE",
+			"item": [
+				{
+					"name": "Delete_user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify delete operation\", function () {\r",
+									"    if (pm.response.code === 204) {\r",
+									"        pm.response.to.have.status(204);  // Usuário existe e foi deletado\r",
+									"    } else if (pm.response.code === 404) {\r",
+									"        pm.response.to.have.status(404);  // Usuário não existe ou já foi deletado\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Unexpected response status: \" + pm.response.code);\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body is empty\", function () {\r",
+									"    if (pm.response.code === 204) {\r",
+									"        pm.expect(pm.response.text()).to.be.empty;\r",
+									"    } else {\r",
+									"        pm.expect(pm.response.json()).to.have.property(\"message\", \"Resource not found\");\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type header is not present\", function () {\r",
+									"    if (pm.response.code === 204) {\r",
+									"        pm.expect(pm.response.headers.has('Content-Type')).to.be.false;\r",
+									"    } else {\r",
+									"        pm.expect(pm.response.headers.has('Content-Type')).to.be.true;\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://gorest.co.in/public/v2/users/{{user_id}}",
+							"protocol": "https",
+							"host": [
+								"gorest",
+								"co",
+								"in"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "f748cbb3116e44fe80266bffc031a81a5ee134434e64c60709b155e72c46e0fa",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
