@@ -1,9 +1,12 @@
 # S206
 
 -Testes do Postman.
+
 -Relatório Newman.
+
 -Testes do Cypress.
--Relatório Mochawesome.
+
+-não consegui rodar o mocha
 
 # Execução
 
@@ -11,5 +14,5 @@
 - Executar os testes manualmente ou usar o runner
 
 #Cypress
-- importar o arquivo partecypress e executar ele pelo terminal
+- importar o arquivo partecypress.py.js e executar ele pelo terminal
 
