@@ -1,4 +1,5 @@
-Questão 2
+#Questão 2
+
 Os testes realizados são manuais ou automatizados?
 
 Os testes são automatizados e são projetados para serem executados diretamente em uma ferramenta de teste, sem a necessidade de serem realizados manualmente.
